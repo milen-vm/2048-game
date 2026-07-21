@@ -25,7 +25,7 @@ export default class Cell {
 
     set tile(value) {
         this.#tile = value;
-        if(value === null) {
+        if(!value) {
 
             return;
         }
@@ -40,7 +40,7 @@ export default class Cell {
 
     set mergeTile(value) {
         this.#mergeTile = value;
-        if(value == null) {
+        if(!value) {
 
             return;
         }
@@ -50,8 +50,13 @@ export default class Cell {
     }
 
     canAccept(tile) {
+        if(!tile) {
+
+            return true;
+        }
+
         return (
-            this.tile == null || 
+            !this.tile || 
             (this.mergeTile == null && this.tile.value === tile.value)
         );
     }

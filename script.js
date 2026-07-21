@@ -7,15 +7,13 @@ const grid = new Grid(gameBoard);
 grid.randomEmptyCell().tile = new Tile(gameBoard);
 grid.randomEmptyCell().tile = new Tile(gameBoard);
 
-console.log(grid.cellsByColumn)
-
 setupInput();
 
 function setupInput() {
     window.addEventListener('keydown', handleInput, { once: true });
 }
 
-function handleInput(e) {console.log(e.key)
+function handleInput(e) {
     switch (e.key) {
         case 'ArrowUp':
             moveUp();
@@ -46,6 +44,10 @@ function slideTiles(cells) {
         // Loop start from 1 because 0 insex cell, top of the column, can not be moved upward.
         for(let i = 1; i < column.length; i++) {
             const cell = column[i];
+            if(!cell.tile) {
+                // skip cell if do not have a tail
+                continue;
+            }
             // last valid cell to whitch can move to
             let lastValidCell;
             // chekeing uper cell
@@ -57,7 +59,7 @@ function slideTiles(cells) {
                     break;
                 }
 
-                lastValidCeel = moveToCell;
+                lastValidCell = moveToCell;
             }
             // move cell
             if(lastValidCell != null) {
