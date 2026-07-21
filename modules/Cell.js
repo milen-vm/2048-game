@@ -50,13 +50,8 @@ export default class Cell {
     }
 
     canAccept(tile) {
-        if(!tile) {
-
-            return true;
-        }
-
         return (
-            !this.tile || 
+            !tile || !this.tile || 
             (this.mergeTile == null && this.tile.value === tile.value)
         );
     }
