@@ -6,3 +6,69 @@ const grid = new Grid(gameBoard);
 
 grid.randomEmptyCell().tile = new Tile(gameBoard);
 grid.randomEmptyCell().tile = new Tile(gameBoard);
+
+console.log(grid.cellsByColumn)
+
+setupInput();
+
+function setupInput() {
+    window.addEventListener('keydown', handleInput, { once: true });
+}
+
+function handleInput(e) {console.log(e.key)
+    switch (e.key) {
+        case 'ArrowUp':
+            moveUp();
+        break;
+        case 'ArrowDown':
+            moveDown();
+        break;
+        case 'ArrowLeft':
+            moveLeft();
+        break;
+        case 'ArrowRight':
+            moveRight();
+        break;
+        default:
+            setupInput();
+        return;
+    }
+
+    setupInput();
+}
+
+function moveUp() {
+    return slideTiles(grid.cellsByColumn);
+}
+
+function slideTiles(cells) {
+    cells.forEach(column => {
+        // Loop start from 1 because 0 insex cell, top of the column, can not be moved upward.
+        for(let i = 1; i < column.length; i++) {
+            const cell = column[i];
+            // last valid cell to whitch can move to
+            let lastValidCell;
+            // chekeing uper cell
+            for(let j = i - 1; j >= 0; j--) {
+                const moveToCell = column[j];
+                // check if cell can be moved
+                if(!moveToCell.canAccept(cell.tile)) {
+                    // if cell can not be movet upward, the loop is stops
+                    break;
+                }
+
+                lastValidCeel = moveToCell;
+            }
+            // move cell
+            if(lastValidCell != null) {
+                if (lastValidCell.tile != null) {
+                    lastValidCell.mergeTile = cell.tile;
+                } else {
+                    lastValidCell.tile = cell.tile;
+                }
+
+                cell.tile = null;
+            }
+        }
+    });
+}

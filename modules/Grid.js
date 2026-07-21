@@ -25,6 +25,18 @@ export default class Grid {
         return this.#cells.filter(cell => cell.tile == null);
     }
 
+    get cellsByColumn() {
+        /**
+         * @var cellGrid contains cells by colum, every array represents column in the grid
+         */
+        return this.#cells.reduce((cellGrid, cell) => {
+            cellGrid[cell.x] = cellGrid[cell.x] || [];
+            cellGrid[cell.x][cell.y] = cell;
+
+            return cellGrid;
+        }, []);
+    }
+
     randomEmptyCell() {
         const randomIndex = Math.floor(Math.random() * this.#emptyCells.length);
 
