@@ -52,7 +52,18 @@ export default class Cell {
     canAccept(tile) {
         return (
             !tile || !this.tile || 
-            (this.mergeTile == null && this.tile.value === tile.value)
+            (!this.mergeTile && this.tile.value == tile.value)
         );
+    }
+
+    mergeTiles() {
+        if(!this.tile || !this.mergeTile) {
+
+            return;
+        }
+
+        this.tile.value = this.tile.value + this.mergeTile.value;
+        this.mergeTile.remove();
+        this.mergeTile = null;
     }
 }

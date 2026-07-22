@@ -32,11 +32,26 @@ function handleInput(e) {
         return;
     }
 
+    grid.cells.forEach(cell => cell.mergeTiles());
+
     setupInput();
 }
 
 function moveUp() {
     return slideTiles(grid.cellsByColumn);
+}
+
+function moveDown() {
+    // spred opsrator (...) is used for not changing the instance grid.cellsByColumn array and make new one which is reversed
+    return slideTiles(grid.cellsByColumn.map(column => [...column].reverse()));
+}   
+
+function moveLeft() {
+    return slideTiles(grid.cellsByRow);
+}
+
+function moveRight() {
+    return slideTiles(grid.cellsByRow.map(row => [...row].reverse()));
 }
 
 function slideTiles(cells) {
