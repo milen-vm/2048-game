@@ -16,15 +16,35 @@ function setupInput() {
 function handleInput(e) {
     switch (e.key) {
         case 'ArrowUp':
+            if(!canMoveUp()) {
+                setupInput();
+                return;
+            }
+
             moveUp();
         break;
         case 'ArrowDown':
+            if(!canMoveDown()) {
+                setupInput();
+                return;
+            }
+
             moveDown();
         break;
         case 'ArrowLeft':
+            if(!canMoveLeft()) {
+                setupInput();
+                return;
+            }
+
             moveLeft();
         break;
         case 'ArrowRight':
+            if(!canMoveRight()) {
+                setupInput();
+                return;
+            }
+
             moveRight();
         break;
         default:
@@ -32,10 +52,23 @@ function handleInput(e) {
         return;
     }
 
-    grid.cells.forEach(cell => cell.mergeTiles());
+    const scoreElement = document.getElementById('score');
+    let score = parseInt(scoreElement.getAttribute('data-score'));
+    grid.cells.forEach(cell => {
+        score += cell.mergeTiles();
+    });
+
+    scoreElement.setAttribute('data-score', score);
+    scoreElement.textContent = score;
 
     const newTile = new Tile(gameBoard);
     grid.randomEmptyCell().tile = newTile;
+
+    if(!canMoveUp && !canMoveDown && !canMoveLeft && !canMoveRight) {
+        alert('Game End!');
+
+        return;
+    }
 
     setupInput();
 }
@@ -55,6 +88,37 @@ function moveLeft() {
 
 function moveRight() {
     return slideTiles(grid.cellsByRow.map(row => [...row].reverse()));
+}
+
+function canMoveUp() {
+    return canMove(grid.cellsByColumn);
+}
+
+function canMoveDown() {
+    return canMove(grid.cellsByColumn.map(column => [...column].reverse()));
+}
+
+function canMoveLeft() {
+    return canMove(grid.cellsByRow);
+}
+
+function canMoveRight() {
+    return canMove(grid.cellsByRow.map(row => [...row].reverse()));
+}
+
+function canMove(cells) {
+    return cells.some(group => {
+        return group.some((cell, index) => {
+            if(index === 0 || !cell.tile) {
+
+                return false;
+            }
+
+            const moveToCell = group[index - 1];
+
+            return moveToCell.canAccept(cell.tile);
+        })
+    })
 }
 
 function slideTiles(cells) {

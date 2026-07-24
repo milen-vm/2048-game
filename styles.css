@@ -13,6 +13,17 @@ body {
     font-size: 7.5vmin;
 }
 
+.header {
+    display: flex;
+    padding-bottom: 1vmin;
+    margin-top: 2.5vmin;
+    border-bottom: 1px solid #cccccc;
+    align-items: center;
+    gap: 1vmin;
+    color: #cccccc;
+    fill: #cccccc
+}
+
 #game-board {
     /* --grid-size: 4;
     --cell-size: 20vmin;

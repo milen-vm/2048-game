@@ -59,11 +59,14 @@ export default class Cell {
     mergeTiles() {
         if(!this.tile || !this.mergeTile) {
 
-            return;
+            return 0;
         }
 
         this.tile.value = this.tile.value + this.mergeTile.value;
         this.mergeTile.remove();
         this.mergeTile = null;
+
+
+        return this.tile.value;
     }
 }
